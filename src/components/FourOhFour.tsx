@@ -21,11 +21,11 @@ const FourOhFour: React.FC<{ errorMsg: string }> = ({ errorMsg }) => {
           and open devtools for more details, and report this issue to{' '}
           <a
             className="text-blue-600 hover:text-blue-700 hover:underline"
-            href="https://github.com/lyc8503/onedrive-cf-index-ng/issues"
+            href="docs/issues"
             target="_blank"
             rel="noopener noreferrer"
           >
-            onedrive-cf-index-ng issues
+            issues
           </a>
           .
         </div>

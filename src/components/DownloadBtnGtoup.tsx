@@ -1,4 +1,4 @@
-import { MouseEventHandler, useState } from 'react'
+import React, { MouseEventHandler, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { IconProp } from '@fortawesome/fontawesome-svg-core'
 import toast from 'react-hot-toast'
@@ -10,6 +10,8 @@ import { useRouter } from 'next/router'
 import { getBaseUrl } from '../utils/getBaseUrl'
 import { getStoredToken } from '../utils/protectedRouteHandler'
 import CustomEmbedLinkMenu from './CustomEmbedLinkMenu'
+import siteConfig from '../../config/site.config'
+import { extractAuthCodeFromRedirected } from '../utils/oAuthHandler'
 
 const btnStyleMap = (btnColor?: string) => {
   const colorMap = {
@@ -69,7 +71,7 @@ const DownloadButtonGroup = () => {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
-    <>
+    <PasswordProtected password={siteConfig?.downloadProtected?.password}>
       <CustomEmbedLinkMenu menuOpen={menuOpen} setMenuOpen={setMenuOpen} path={asPath} />
       <div className="flex flex-wrap justify-center gap-2">
         <DownloadButton
@@ -96,8 +98,47 @@ const DownloadButtonGroup = () => {
           btnIcon="pen"
         />
       </div>
-    </>
+    </PasswordProtected>
   )
 }
 
 export default DownloadButtonGroup
+
+const PasswordProtected = ({ children, password }: { children: HTMLElement | any; password?: string }) => {
+  const [input, setInput] = useState<string>()
+
+  // -1上一次密码错误，0需要密码但未输入，1无需密码，2密码正确
+  const [status, setStatus] = useState<number>(() => (!password?.length ? 1 : 0))
+  let passwordError = [-1].includes(status)
+
+  if ([1, 2].includes(status)) {
+    return children
+  }
+
+  return (
+    <div className={'flex flex-col text-center'}>
+      <div>{siteConfig.downloadProtected.tips}</div>
+      <div className={'flex w-full flex-row content-center space-x-2'}>
+        <input
+          value={input}
+          className={`my-2 flex-1 rounded border bg-gray-50 p-2 font-mono text-sm font-medium focus:outline-none focus:ring dark:bg-gray-800 dark:text-white
+           ${passwordError ? 'border-red-500/50 focus:ring-red-500/40' : ''}`}
+          autoFocus
+          type="text"
+          placeholder="Password.."
+          onChange={e => {
+            setInput(e.target.value)
+          }}
+        />
+        <button
+          className={
+            'rounded bg-blue-600 px-4 text-white hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-400'
+          }
+          onClick={() => setStatus(`${password}`.trim() === `${input}`.trim() ? 2 : -1)}
+        >
+          Confirm
+        </button>
+      </div>
+    </div>
+  )
+}

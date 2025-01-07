@@ -81,7 +81,7 @@ export default function CustomEmbedLinkMenu({
                 <>
                   {'Change the raw file direct link to a URL ending with the extension of the file.'}{' '}
                   <a
-                    href="https://ovi.swo.moe/docs/features/customise-direct-link"
+                    href="/docs/features/customise-direct-link"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-400 underline"
