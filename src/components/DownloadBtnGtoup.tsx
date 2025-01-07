@@ -12,6 +12,7 @@ import { getStoredToken } from '../utils/protectedRouteHandler'
 import CustomEmbedLinkMenu from './CustomEmbedLinkMenu'
 import siteConfig from '../../config/site.config'
 import { extractAuthCodeFromRedirected } from '../utils/oAuthHandler'
+import { Tips } from './Tips'
 
 const btnStyleMap = (btnColor?: string) => {
   const colorMap = {
@@ -117,7 +118,7 @@ const PasswordProtected = ({ children, password }: { children: HTMLElement | any
 
   return (
     <div className={'flex flex-col text-center'}>
-      <div>{siteConfig.downloadProtected.tips}</div>
+      <Tips mpname={siteConfig?.downloadProtected?.mpname}/>
       <div className={'flex w-full flex-row content-center space-x-2'}>
         <input
           value={input}

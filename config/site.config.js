@@ -43,7 +43,7 @@ module.exports = {
 
   // 下载保护密码
   downloadProtected: {
-    tips: '关注公众号 墨鲸说话 获取下载地址',
+    mpname: '墨鲸说话',
     password: '1234',
   },
 
